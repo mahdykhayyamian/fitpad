@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mahdy.khayyamian.fitpad"
     },
     "android": {
       "adaptiveIcon": {
@@ -36,6 +37,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a174fa6f-df22-4eb2-a411-f17f675339c9"
+      }
     }
   }
 }
