@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, Text, StatusBar, TouchableOpacity, Pressable } from 'react-native';
+import { View, FlatList, StyleSheet, Text, StatusBar, Modal, Pressable, Alert } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { router } from "expo-router";
 import { useAppSelector } from './redux/hooks'
+import {AddWorkout} from './addWorkout';
 
 const FONT_FAMILY = 'Thonburi';
 
@@ -16,42 +16,53 @@ const Item = ({ title, date, weight }: ItemProps) => (
   </View>
 );
 
-
-
 const Workouts = () => {
 
   const workouts = useAppSelector((state) => state.workouts.value)
 
-  // const [workouts, setWorkouts] = useState(DATA);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
-          <View style={styles.tableHeader}>
-            <Text style={styles.date}>Date</Text>
-            <Text style={styles.title}>Title</Text>
-            <Text style={styles.weight}>Weight</Text>
-          </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.tableHeader}>
+          <Text style={styles.date}>Date</Text>
+          <Text style={styles.title}>Title</Text>
+          <Text style={styles.weight}>Weight</Text>
+        </View>
 
-          <FlatList
-            data={workouts}
-            renderItem={({ item }) => <Item title={item.type} date={item.date} weight={item.weight} />}
-            keyExtractor={item => item.id}
-          />
+        <FlatList
+          data={workouts}
+          renderItem={({ item }) => <Item title={item.type} date={item.date} weight={item.weight} />}
+          keyExtractor={item => item.id}
+        />
 
-          <View>
-            <Pressable
-              style={styles.addWorkoutButton}
-              onPress={() => {
-                router.push("./addWorkout");
-              }}
-            >
-              <Text style={styles.addWorkoutText}>Add Workout</Text>
-            </Pressable>
-          </View>
+        <View>
+          <Pressable
+            style={styles.addWorkoutButton}
+            onPress={() => {
+              setModalVisible(true);
+            }}
+          >
+            <Text style={styles.addWorkoutText}>Add Workout</Text>
 
-        </SafeAreaView>
-      </SafeAreaProvider>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+              }}>
+              <AddWorkout onSave={() => {
+                setModalVisible(false);
+              }}/>
+            </Modal>
+          </Pressable>
+        </View>
+
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 };
 
@@ -109,7 +120,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     fontSize: 18,
     fontFamily: FONT_FAMILY
-  }
+  },
 });
 
 export default Workouts;

@@ -7,12 +7,15 @@ import { useAppDispatch } from './redux/hooks'
 import { addWorkout } from './redux/workoutsSlice'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { router } from "expo-router";
 
 
 const FONT_FAMILY = 'Thonburi';
 
-export default function AddWorkout() {
+interface Props {
+	onSave: () => void;
+}
+
+export const AddWorkout: React.FC<Props> = ({ onSave }) => {
 
 	const dispatch = useAppDispatch()
 
@@ -108,7 +111,7 @@ export default function AddWorkout() {
 								weight: weight,
 								notes: null
 							}));
-							router.push("./workouts")
+							onSave();
 						}}>
 							<Text style={styles.dateText}> Save </Text>
 						</Pressable>
@@ -162,6 +165,18 @@ const styles = StyleSheet.create({
 	formContainer: {
 		display: 'flex',
 		flexDirection: 'column',
+		margin: 20,
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 35,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
 	},
 	datePicker: {
 		display: 'flex',
