@@ -12,10 +12,11 @@ import { v4 as uuidv4 } from 'uuid';
 const FONT_FAMILY = 'Thonburi';
 
 interface Props {
-	onSave: () => void;
+	onSave: () => void,
+	onCancel: () => void
 }
 
-export const AddWorkout: React.FC<Props> = ({ onSave }) => {
+export const AddWorkout: React.FC<Props> = ({ onSave, onCancel }) => {
 
 	const dispatch = useAppDispatch()
 
@@ -98,28 +99,48 @@ export const AddWorkout: React.FC<Props> = ({ onSave }) => {
 							/>
 						</View>
 					</View>
-					<View style={styles.saveButtonContainer}>
-						<Pressable style={styles.dateButton} onPress={() => {
-							if (workoutType == null) {
-								return;
-							}
-
-							dispatch(addWorkout({
-								id: uuidv4(),
-								date: date.toDateString(),
-								type: workoutType,
-								weight: weight,
-								notes: null
-							}));
-							onSave();
-						}}>
-							<Text style={styles.dateText}> Save </Text>
-						</Pressable>
+					<View style={styles.buttonsContainer}>
+						<View style={styles.saveButtonContainer}>
+							<Pressable style={styles.saveButton} onPress={() => {
+								if (workoutType == null) {
+									return;
+								}
+								dispatch(addWorkout({
+									id: uuidv4(),
+									date: date.toDateString(),
+									type: workoutType,
+									weight: weight,
+									notes: null
+								}));
+								onSave();
+							}}>
+								<Text style={styles.dateText}> Save </Text>
+							</Pressable>
+						</View>
+						<View style={styles.cancelButtonContainer}>
+							<Pressable style={styles.cancelButton} onPress={() => {
+								onCancel();
+							}}>
+								<Text style={styles.dateText}> Cancel </Text>
+							</Pressable>
+						</View>
 					</View>
 				</View>
 			</SafeAreaView>
 		</SafeAreaProvider >
 	);
+}
+
+const buttonStyle = {
+		fontSize: 14,
+		fontFamily: FONT_FAMILY,
+		color: 'white',
+		marginTop: 10,
+		paddingTop: 10,
+		paddingBottom: 10,
+		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: '#fff',
 }
 
 const styles = StyleSheet.create({
@@ -157,10 +178,22 @@ const styles = StyleSheet.create({
 		marginRight: 20,
 		marginLeft: 20,
 	},
+	buttonsContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'flex-start'
+	},
 	saveButtonContainer: {
 		marginTop: 20,
 		marginRight: 20,
 		marginLeft: 20,
+		minWidth: 120
+	},
+	cancelButtonContainer: {
+		marginTop: 20,
+		marginRight: 20,
+		marginLeft: 20,
+		minWidth: 80,
 	},
 	formContainer: {
 		display: 'flex',
@@ -186,17 +219,16 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 	},
 	dateButton: {
+		...buttonStyle,
 		backgroundColor: 'blue',
-		fontSize: 14,
-		fontFamily: FONT_FAMILY,
-		borderStyle: 'solid',
-		color: 'white',
-		marginTop: 10,
-		paddingTop: 10,
-		paddingBottom: 10,
-		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: '#fff',
+	},
+	saveButton: {
+		...buttonStyle,
+		backgroundColor: 'blue',
+	},
+	cancelButton: {
+		...buttonStyle,
+		backgroundColor: 'grey',
 	},
 	dateText: {
 		color: 'white',

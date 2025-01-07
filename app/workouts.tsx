@@ -54,7 +54,11 @@ const Workouts = () => {
                 Alert.alert('Modal has been closed.');
                 setModalVisible(!modalVisible);
               }}>
-              <AddWorkout onSave={() => {
+              <AddWorkout
+              onSave={() => {
+                setModalVisible(false);
+              }}
+              onCancel={() => {
                 setModalVisible(false);
               }}/>
             </Modal>
